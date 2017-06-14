@@ -7,115 +7,59 @@
 using namespace std;
 
 int main() {
-  int deg, dis, w;
-  int dirIndex;
-  string dir;
-  cin >> deg >> dis;
+    int n;
+    string record;
+    cin >> n;
 
-  deg = deg * 10;
-  dirIndex = deg / 1125;
+    int fivesCount = 24*12;
+    int fives[fivesCount];
+    for (int i = 0; i < fivesCount; i++) {
+        fives[i] = 0;
+    }
 
-  switch(dirIndex) {
-    case 0:
-    case 31:
-     dir = "N";
-     break;
-    case 1:
-    case 2:
-     dir = "NNE";
-     break;
-    case 3:
-    case 4:
-     dir = "NE";
-     break;
-    case 5:
-    case 6:
-     dir = "ENE";
-     break;
-    case 7:
-    case 8:
-     dir = "E";
-     break;
-    case 9:
-    case 10:
-     dir = "ESE";
-     break;
-    case 11:
-    case 12:
-     dir = "SE";
-     break;
-    case 13:
-    case 14:
-     dir = "SSE";
-     break;
-    case 15:
-    case 16:
-     dir = "S";
-     break;
-    case 17:
-    case 18:
-     dir = "SSW";
-     break;
-    case 19:
-    case 20:
-     dir = "SW";
-     break;
-    case 21:
-    case 22:
-     dir = "WSW";
-     break;
-    case 23:
-    case 24:
-     dir = "W";
-     break;
-    case 25:
-    case 26:
-     dir = "WNW";
-     break;
-    case 27:
-    case 28:
-     dir = "NW";
-     break;
-    case 29:
-    case 30:
-     dir = "NNW";
-     break;
-  }
+    for (int j = 0; j < n; j++) {
+        int start, end;
+        scanf("%d-%d", &start, &end);
+        int sHour, sMinFive, eHour, eMinFive;
+        sHour = start / 100;
+        sMinFive = start % 100 / 5;
+        eHour = end / 100;
+        eMinFive = ((end % 100) - 1) / 5;
+        //cout << "j:" << j << endl;
+        //cout << sHour << endl;
+        //cout << sMinFive << endl;
+        //cout << eHour << endl;
+        //cout << eMinFive << endl;
+        for (int k = 0; k < fivesCount; k++) {
+            //cout << "k:" << k << endl;
+            if (sHour * 12 + sMinFive <= k &&  k < eHour * 12 + eMinFive) {
+                fives[k] = 1;
+                // cout << fives[k] << endl;
+            }
+        }
+    }
 
-  double disd;
-  disd = dis * 10.0;
-  disd = disd / 60.0;
-  disd = round(disd);
+    int current = 0;
+    for (int l = 0; l < fivesCount; l++) {
+        fives[l];
 
-  if (disd <= 2) {
-    w = 0;
-  } else if (disd <= 15) {
-    w = 1;
-  } else if (disd <= 33) {
-    w = 2;
-  } else if (disd <= 54) {
-    w = 3;
-  } else if (disd <= 79) {
-    w = 4;
-  } else if (disd <= 107) {
-    w = 5;
-  } else if (disd <= 138) {
-    w = 6;
-  } else if (disd <= 171) {
-    w = 7;
-  } else if (disd <= 207) {
-    w = 8;
-  } else if (disd <= 244) {
-    w = 9;
-  } else if (disd <= 284) {
-    w = 10;
-  } else if (disd <= 326) {
-    w = 11;
-  } else {
-    w = 12;
-  } 
+        if(current == 0 && fives[l] == 1) {
+            cout << setfill('0') << setw(2) << (l / 12);
+            cout << setfill('0') << setw(2) << (l % 12) * 5;
+            current = 1;
+        }
 
-  if (w == 0) dir = "C";
+        if(current == 1 && fives[l] == 0) {
+            cout << "-";
+            cout << setfill('0') << setw(2) << (l / 12);
+            cout << setfill('0') << setw(2) << (l % 12) * 5 << endl;
+            current = 0;
+        }
 
-  cout << dir << " " << w << endl;
+        if (current == 1 && fives[l] == 1 && l == (fivesCount - 1)) {
+            cout << "-";
+            cout << setfill('0') << setw(2) << 24;
+            cout << setfill('0') << setw(2) << 0 << endl;
+        }
+    }
 }
