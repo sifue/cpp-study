@@ -12,47 +12,53 @@ int main() {
     cin >> n;
 
     int fivesCount = 24*12;
-    int fives[fivesCount];
-    for (int i = 0; i < fivesCount; i++) {
-        fives[i] = 0;
-    }
+    int fives[fivesCount] = {};
 
     for (int j = 0; j < n; j++) {
         int start, end;
         scanf("%d-%d", &start, &end);
-        int sHour, sMinFive, eHour, eMinFive;
+        int sHour, sMin, eHour, eMin;
         sHour = start / 100;
-        sMinFive = start % 100 / 5;
+        sMin = start % 100;
         eHour = end / 100;
-        eMinFive = ((end % 100) - 1) / 5;
+        eMin = end % 100;
+        if (eMin == 0) {
+            eHour--;
+            eMin = 60;
+        }
         //cout << "j:" << j << endl;
         //cout << sHour << endl;
-        //cout << sMinFive << endl;
+        //cout << sMin << endl;
         //cout << eHour << endl;
-        //cout << eMinFive << endl;
+        //cout << eMin << endl;
         for (int k = 0; k < fivesCount; k++) {
-            //cout << "k:" << k << endl;
-            if (sHour * 12 + sMinFive <= k &&  k < eHour * 12 + eMinFive) {
+            if ((sHour * 12 + (sMin / 5)) <= k
+                    && k <= (eHour * 12) + ((eMin - 1)/ 5)){
                 fives[k] = 1;
-                // cout << fives[k] << endl;
+                //cout << "k:" << k << endl;
             }
         }
     }
 
     int current = 0;
     for (int l = 0; l < fivesCount; l++) {
-        fives[l];
 
-        if(current == 0 && fives[l] == 1) {
+        if(current == 0 && fives[l] == 1) { // start
             cout << setfill('0') << setw(2) << (l / 12);
             cout << setfill('0') << setw(2) << (l % 12) * 5;
             current = 1;
         }
 
-        if(current == 1 && fives[l] == 0) {
+        if(current == 1 && fives[l] == 0) { // end
             cout << "-";
-            cout << setfill('0') << setw(2) << (l / 12);
-            cout << setfill('0') << setw(2) << (l % 12) * 5 << endl;
+            int h = (l / 12);
+            int m = (l % 12) * 5;
+            if (m == 60) {
+              h++;
+              m = 0;
+            }
+            cout << setfill('0') << setw(2) << h;
+            cout << setfill('0') << setw(2) << m << endl;
             current = 0;
         }
 
