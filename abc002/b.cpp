@@ -28,7 +28,7 @@ int main() {
     }
 
     for(int k = 0; k < filtered.size(); k++) {
-      cout << filtered.at(k);
+        cout << filtered.at(k);
     }
     cout << endl;
 }
