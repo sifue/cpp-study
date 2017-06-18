@@ -1,8 +1,8 @@
 #include <iostream>
 //#include <iomanip>
 //#include <string>
-#include <vector>
 #include <set>
+#include <vector>
 //#include <cstdlib>
 //#include <cmath>
 //#include <cfenv>
@@ -20,7 +20,7 @@ using namespace std;
    8.関係の数のmaxを取得しておく
    9.これを全員に対して行い、最大数を取る
    */
-int main(){
+int main() {
   int n, m;
   cin >> n >> m;
   int max = 1;
@@ -44,7 +44,7 @@ int main(){
       }
     }
 
-    for (int ga : giins) { // 3
+    for (int ga : giins) {   // 3
       for (int gb : giins) { // 5
         if (ga != gb && rels[ga][gb] == 0) {
           // 6 もし関係がないなら派閥から取り除く
@@ -53,7 +53,7 @@ int main(){
       }
     }
     int habatsuCount = habatsu.size(); // 7
-    if (habatsuCount > max) { // 8
+    if (habatsuCount > max) {          // 8
       max = habatsuCount;
     }
   }

@@ -1,8 +1,8 @@
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <cmath>
 #include <cfenv>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -15,71 +15,71 @@ int main() {
   deg = deg * 10;
   dirIndex = deg / 1125;
 
-  switch(dirIndex) {
-    case 0:
-    case 31:
-     dir = "N";
-     break;
-    case 1:
-    case 2:
-     dir = "NNE";
-     break;
-    case 3:
-    case 4:
-     dir = "NE";
-     break;
-    case 5:
-    case 6:
-     dir = "ENE";
-     break;
-    case 7:
-    case 8:
-     dir = "E";
-     break;
-    case 9:
-    case 10:
-     dir = "ESE";
-     break;
-    case 11:
-    case 12:
-     dir = "SE";
-     break;
-    case 13:
-    case 14:
-     dir = "SSE";
-     break;
-    case 15:
-    case 16:
-     dir = "S";
-     break;
-    case 17:
-    case 18:
-     dir = "SSW";
-     break;
-    case 19:
-    case 20:
-     dir = "SW";
-     break;
-    case 21:
-    case 22:
-     dir = "WSW";
-     break;
-    case 23:
-    case 24:
-     dir = "W";
-     break;
-    case 25:
-    case 26:
-     dir = "WNW";
-     break;
-    case 27:
-    case 28:
-     dir = "NW";
-     break;
-    case 29:
-    case 30:
-     dir = "NNW";
-     break;
+  switch (dirIndex) {
+  case 0:
+  case 31:
+    dir = "N";
+    break;
+  case 1:
+  case 2:
+    dir = "NNE";
+    break;
+  case 3:
+  case 4:
+    dir = "NE";
+    break;
+  case 5:
+  case 6:
+    dir = "ENE";
+    break;
+  case 7:
+  case 8:
+    dir = "E";
+    break;
+  case 9:
+  case 10:
+    dir = "ESE";
+    break;
+  case 11:
+  case 12:
+    dir = "SE";
+    break;
+  case 13:
+  case 14:
+    dir = "SSE";
+    break;
+  case 15:
+  case 16:
+    dir = "S";
+    break;
+  case 17:
+  case 18:
+    dir = "SSW";
+    break;
+  case 19:
+  case 20:
+    dir = "SW";
+    break;
+  case 21:
+  case 22:
+    dir = "WSW";
+    break;
+  case 23:
+  case 24:
+    dir = "W";
+    break;
+  case 25:
+  case 26:
+    dir = "WNW";
+    break;
+  case 27:
+  case 28:
+    dir = "NW";
+    break;
+  case 29:
+  case 30:
+    dir = "NNW";
+    break;
   }
 
   double disd;
@@ -113,9 +113,10 @@ int main() {
     w = 11;
   } else {
     w = 12;
-  } 
+  }
 
-  if (w == 0) dir = "C";
+  if (w == 0)
+    dir = "C";
 
   cout << dir << " " << w << endl;
 }
