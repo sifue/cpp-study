@@ -56,6 +56,8 @@ int main() {
     if (habatsuCount > max) {          // 8
       max = habatsuCount;
     }
+    giins.clear();
+    habatsu.clear();
   }
   cout << max << endl;
 }
