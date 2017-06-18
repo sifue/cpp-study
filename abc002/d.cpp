@@ -25,7 +25,23 @@ int main() {
   cin >> n >> m;
   int max = 1;
 
-  int rels[n][n] = {{0}};
+  if (m == 0) {
+    cout << max << endl;
+    exit(0);
+  }
+  // 初期化
+  int rels[n][n];
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      if (i != j) {
+        rels[i][j] = 0;
+      } else {
+        rels[i][j] = 1;
+      }
+    }
+  }
+
+  // 関係の読み取り
   for (int i = 0; i < m; i++) {
     int x, y;
     cin >> x >> y;
