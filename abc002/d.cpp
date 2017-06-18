@@ -26,7 +26,7 @@ int main() {
   int max = 1;
 
   int rels[n][n] = {{0}};
-  for (int j = 0; j < m; j++) {
+  for (int i = 0; i < m; i++) {
     int x, y;
     cin >> x >> y;
     rels[x - 1][y - 1] = 1;
@@ -36,16 +36,16 @@ int main() {
   for (int i = 0; i < n; i++) { // 1
     vector<int> giins;
     set<int> habatsu;
-    habatsu.insert(0);
+    habatsu.insert(i);
     for (int j = 0; j < n; j++) { // 2
       if (rels[i][j] == 1) {
         giins.push_back(j);
-        habatsu.insert(j); // 最大の可能性
+        habatsu.insert(j); // 最大の可能性の派閥を作成
       }
     }
 
-    for (int ga : giins) {   // 3
-      for (int gb : giins) { // 5
+    for (int ga : giins) {   // 3  i で選んだ人の知り合い
+      for (int gb : giins) { // 5  i の関係者の関係者として選んだ人
         if (ga != gb && rels[ga][gb] == 0) {
           // 6 もし関係がないなら派閥から取り除く
           habatsu.erase(gb);
