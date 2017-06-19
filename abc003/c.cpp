@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <queue>
 #include <stack>
 #include <vector>
@@ -16,40 +17,37 @@ using namespace std;
 int main() {
   int n, k;
   cin >> n >> k;
-  double result = 0.0;
-  priority_queue<int> rates;
+  long double result = 0.0;
+  priority_queue<long> rates;
   for (int i = 0; i < n; i++) {
-    int rate;
+    long rate;
     cin >> rate;
     rates.push(rate);
   }
 
   for (int i = 1; i <= k; i++) {
     // i個取得する場合
-    priority_queue<int> queue = rates;
-    stack<int> stack;
+    priority_queue<long> queue = rates;
+    stack<long> stack;
     int counter = i;
     while (counter != 0) {
-      //cout << queue.top() << endl;
       stack.push(queue.top());
       queue.pop();
       counter--;
     }
 
-    double c = 0.0;
+    long c_e8 = 0;
     while (!stack.empty()) {
-      int r = stack.top();
-      if (r < c) break;
-      // cout << r << " " ;
-      c = (c + r) / 2.0;
+      long r = stack.top();
+      c_e8 = (c_e8 + r * 10000000000) / 2;
       stack.pop();
     }
-    cout << endl;
+    long double c = (long double)c_e8 / 10000000000.0; 
 
     if (c > result) { // 最大値更新できるなら更新
       result = c;
     } 
   }
 
-  cout << result << endl;
+  cout << fixed << setprecision(6) << result << endl;
 }
