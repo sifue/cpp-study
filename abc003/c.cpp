@@ -1,60 +1,55 @@
 #include <iostream>
+#include <queue>
+#include <stack>
 #include <vector>
 
 using namespace std;
 
-double result = 0.0;
-vector<int> rates;
-
-void dfs(int n, vector<int> taken_indexes, int k) {
-  if (k >= 0) {
-    // kが0以上ならチェックと計算
-    double c = 0.0;
-    for (int taken_index : taken_indexes) {
-      c = (c + rates[taken_index]) / 2.0;
-    }
-    if (c > result) {
-      result = c;
-    }
-  }
-
-  // 上限まで取りきっているならもう終了
-  if (k == 0) {
-    return;
-  }
-
-  for (int i = 0; i < n; i++) {
-    // すでに取得済みかチェック
-    bool is_taken = false;
-    for (int taken_index : taken_indexes) {
-      if (taken_index == i) {
-        is_taken = true;
-      }
-    }
-
-    // すでに取得済みのものは無視
-    if (is_taken) {
-        continue;
-    }
-
-    vector<int> next_taken_indexes = taken_indexes;
-    next_taken_indexes.push_back(i);
-    int dec_k = k - 1;
-    dfs(n, next_taken_indexes, dec_k); // 取る
-  }
-
-}
+/*
+   小さいものから見ていったほうが点数が高くなる
+   rate をソート
+   その中から1 ~ k 個取る方法を考えて
+   うしろの数の最大が含まれるように取ってみる
+   もし点数が更新できなかったら終了
+*/
 
 int main() {
   int n, k;
   cin >> n >> k;
+  double result = 0.0;
+  priority_queue<int> rates;
   for (int i = 0; i < n; i++) {
     int rate;
     cin >> rate;
-    rates.push_back(rate);
+    rates.push(rate);
   }
 
-  vector<int> taken_indexes;
-  dfs(n, taken_indexes, k);
+  for (int i = 1; i <= k; i++) {
+    // i個取得する場合
+    priority_queue<int> queue = rates;
+    stack<int> stack;
+    int counter = i;
+    while (counter != 0) {
+      //cout << queue.top() << endl;
+      stack.push(queue.top());
+      queue.pop();
+      counter--;
+    }
+
+    double c = 0.0;
+    while (!stack.empty()) {
+      int r = stack.top();
+      if (r < c) break;
+      // cout << r << " " ;
+      c = (c + r) / 2.0;
+      stack.pop();
+    }
+    cout << endl;
+
+    if (c > result) { // 最大値更新できるなら更新
+      result = c;
+    } 
+  }
+
   cout << result << endl;
 }
