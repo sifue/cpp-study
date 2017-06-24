@@ -6,21 +6,22 @@
 
 using namespace std;
 
-const int mod_factor = 1000000007;
+const int mf = 1000000007;
 
-int get_pattern(int rest, int select) {
+long long get_pattern(int rest, int select) {
   if (select == 0)
     return 1;
-  cout << "rest:" << rest << endl;
-  return rest * get_pattern(rest - 1, select - 1);
+  long long pattern = (rest * get_pattern(rest - 1, select - 1)) % mf;
+  return pattern;
 }
 
-int fact(int n) {
+long long fact(int n) {
   if (n == 1)
     return 1;
   if (n == 0)
     return 1;
-  return n * fact(n - 1);
+  long long factorial = (n * fact(n - 1)) % mf;
+  return factorial;
 }
 
 int main() {
@@ -36,26 +37,15 @@ int main() {
   // 2
   int space = x * y; // x y のスペースの数
   cout << "space:" << space << endl;
-
-  int result = 0;
-  if (space == d + l) { // 100点のパターン
-    long gp = get_pattern(space, d);
-    cout << "gp:" << gp << endl;
-    cout << "fact(d):" << fact(d) << endl;
-    int desk_pattern = get_pattern(space, d) / fact(d);
-    int pp = (desk_pattern * ps);
-    result = pp % mod_factor;
-  } else {
-    long gp = get_pattern(space, d);
-    cout << "gp:" << gp << endl;
-    cout << "fact(d):" << fact(d) << endl;
-    int desk_pattern = get_pattern(space, d) / fact(d);
-    cout << "desk_pattern:" << desk_pattern << endl;
-    int lack_pattern = get_pattern(space - d, l) / fact(l);
-    cout << "lack_pattern:" << lack_pattern << endl;
-    int pp = (desk_pattern * lack_pattern * ps);
-    result = pp % mod_factor;
-  }
-
+  long long gp_d = get_pattern(space, d);
+  cout << "gp_d:" << gp_d << endl;
+  long long fc_l = fact(d);
+  cout << "fc_l:" << fc_l << endl;
+  long long desk_pattern = (gp_d / fc_l) % mf;
+  cout << "desk_pattern:" << desk_pattern << endl;
+  long long lack_pattern = (get_pattern(space - d, l) / fact(l)) % mf;
+  cout << "lack_pattern:" << lack_pattern << endl;
+  long long result = (desk_pattern * lack_pattern * ps) % mf;
+  
   cout << result << endl;
 }
