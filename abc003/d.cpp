@@ -11,17 +11,9 @@ const int mf = 1000000007;
 long long get_pattern(int rest, int select) {
   if (select == 0)
     return 1;
-  long long pattern = (rest * get_pattern(rest - 1, select - 1)) % mf;
+  long long pattern = (get_pattern(rest - 1, select - 1) * rest / select) % mf;
+  //cout << "pattern:" << pattern << endl;
   return pattern;
-}
-
-long long fact(int n) {
-  if (n == 1)
-    return 1;
-  if (n == 0)
-    return 1;
-  long long factorial = (n * fact(n - 1)) % mf;
-  return factorial;
 }
 
 int main() {
@@ -37,15 +29,14 @@ int main() {
   // 2
   int space = x * y; // x y のスペースの数
   cout << "space:" << space << endl;
-  long long gp_d = get_pattern(space, d);
-  cout << "gp_d:" << gp_d << endl;
-  long long fc_l = fact(d);
-  cout << "fc_l:" << fc_l << endl;
-  long long desk_pattern = (gp_d / fc_l) % mf;
+  //cout << "d:" << d << endl;
+  //cout << "l:" << l << endl;
+  long long desk_pattern = (get_pattern(space, d)) % mf;
   cout << "desk_pattern:" << desk_pattern << endl;
-  long long lack_pattern = (get_pattern(space - d, l) / fact(l)) % mf;
+  long long lack_pattern = (get_pattern(space - d, l)) % mf;
   cout << "lack_pattern:" << lack_pattern << endl;
-  long long result = (desk_pattern * lack_pattern * ps) % mf;
+  long long result = (desk_pattern * lack_pattern) % mf;
+  result = (result * ps) % mf;
   
   cout << result << endl;
 }
