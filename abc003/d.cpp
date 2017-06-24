@@ -39,18 +39,17 @@ int main() {
 
   int result = 0;
   if (space == d + l) { // 100点のパターン
-    int gp = get_pattern(space, d);
-    cout << "gp:" << gp << endl;
-    int fc = fact(d);
-    cout << "fc:" << fc << endl;
-    int desk_pattern = gp / fc;
-    int pp = (desk_pattern * ps);
-    result = pp % mod_factor;
-  } else { // 101点のパターン
-    int gp = get_pattern(space, d);
+    long gp = get_pattern(space, d);
     cout << "gp:" << gp << endl;
     cout << "fact(d):" << fact(d) << endl;
-    int desk_pattern = gp / fc;
+    int desk_pattern = get_pattern(space, d) / fact(d);
+    int pp = (desk_pattern * ps);
+    result = pp % mod_factor;
+  } else {
+    long gp = get_pattern(space, d);
+    cout << "gp:" << gp << endl;
+    cout << "fact(d):" << fact(d) << endl;
+    int desk_pattern = get_pattern(space, d) / fact(d);
     cout << "desk_pattern:" << desk_pattern << endl;
     int lack_pattern = get_pattern(space - d, l) / fact(l);
     cout << "lack_pattern:" << lack_pattern << endl;
