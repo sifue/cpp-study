@@ -1,10 +1,17 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h>  //  g++ -std=c++14 -o a a.cpp
 
 using namespace std;
-
-#define P(s) cout << s << endl;
+typedef pair<int, int> P;
+typedef long long ll;
+#define rep(i, n) for(int i = 0; i < (n); i++)
+#define all(c) (c).begin(), (c).end()
+#define uniq(c) c.erase(unique(all(c)), (c).end())
+#define _1 first
+#define _2 second
+#define pb push_back
+#define INF 1145141919
+#define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
-#define INF (1 << 29)
 
 vector<int> rs; // 巡回必要なもの全てRs
 int Cs[201][201] = {0}; // 全パスの距離
@@ -14,10 +21,10 @@ int main() {
   int N, M, R;
   cin >> N >> M >> R;
   
-  for (int i = 0; i < R; i++) {
+  rep(i, R) {
     int r;
     cin >> r;
-    rs.push_back(r);
+    rs.pb(r);
   }
 
   for (int i = 1; i <= N; i++) { 
@@ -28,7 +35,7 @@ int main() {
     }
   } // fill
 
-  for (int i = 0; i < M; i++) {
+  rep(i, M) {
     int A, B, C;
     cin >> A >> B >> C;
     Cs[A][B] = C;
@@ -67,7 +74,7 @@ int main() {
   // 2. rsのすべての順列組み合わせを作り、最短距離を使ってそれぞれの全コストを求め、最短を出力
   vector<int> paths = rs;
   int min = INF;
-  sort(paths.begin(), paths.end()); // next_permutation は sortされている必要があった！
+  sort(all(paths)); // next_permutation は sortされている必要があった！
   do {
     int sum = 0;
     for (int i = 0; i < R - 1; i++) {
@@ -78,7 +85,7 @@ int main() {
     }
     // cout << " : " << sum << endl;
     if (sum <= min) min = sum;
-  } while (next_permutation(paths.begin(), paths.end()));
+  } while (next_permutation(all(paths)));
 
   cout << min << endl;
 }
