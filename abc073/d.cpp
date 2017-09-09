@@ -1,10 +1,4 @@
-#include <iostream>
-#include <map>
-#include <vector>
-#include <cassert>
-#include <algorithm>
-#include <functional>
-#include <climits>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -12,7 +6,7 @@ using namespace std;
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
 vector<int> rs; // 巡回必要なもの全てRs
-long long Cs[201][201] = {}; // 全パスの距離
+int Cs[201][201] = {0}; // 全パスの距離
 
 int main() {
 
@@ -28,18 +22,16 @@ int main() {
   for (int i = 1; i <= N; i++) { 
     for (int j = 1; j <= N; j++) { 
       if (i != j) {
-        Cs[i][j] = LLONG_MAX;
+        Cs[i][j] = INT_MAX;
       }
     }
   } // fill
 
   for (int i = 0; i < M; i++) {
     int A, B, C;
-    cin >> A >> B>> C;
-    if (Cs[A][B] > C) {
-      Cs[A][B] = C;
-      Cs[B][A] = C;
-    }
+    cin >> A >> B >> C;
+    Cs[A][B] = C;
+    Cs[B][A] = C;
   }
 
   // cout << "---------" << endl;
@@ -56,7 +48,9 @@ int main() {
   for (int k = 1; k <= N; k++) {
     for (int i = 1; i <= N; i++) { 
       for (int j = 1; j <= N; j++) { 
-        Cs[i][j] = min(Cs[i][j], Cs[i][k] + Cs[k][j]);
+        if(Cs[i][k] != INT_MAX && Cs[k][j] != INT_MAX) { // オーバーフロー対策!!!!
+          Cs[i][j] = min(Cs[i][j], Cs[i][k] + Cs[k][j]);
+        }
       }
     }
   }
@@ -71,9 +65,10 @@ int main() {
 
   // 2. rsのすべての順列組み合わせを作り、最短距離を使ってそれぞれの全コストを求め、最短を出力
   vector<int> paths = rs;
-  long long min = LLONG_MAX;
+  int min = INT_MAX;
+  sort(paths.begin(), paths.end()); // next_permutation は sortされている必要があった！
   do {
-    long long sum = 0;
+    int sum = 0;
     for (int i = 0; i < R - 1; i++) {
       int start = paths[i];
       int end = paths[i + 1];
