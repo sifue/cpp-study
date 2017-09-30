@@ -16,17 +16,16 @@ typedef long long ll;
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
 int main() {
-  int N;
-  cin >> N;
-  int maxPlayer = 0;
-  int minB = INF;
-  rep(i, N) {
-    int A, B;
-    cin >> A >> B;
-    if (B < minB) {
-      maxPlayer = A + B;
-      minB = B;
+  string s;
+  cin >> s;
+  int l = s.size();
+  int cnt = 0;
+
+  rep(i, l) {
+    if(s[i] == '1') {
+      cnt++;
     }
   }
-  cout << maxPlayer << endl;
+
+  cout << cnt << endl;
 }

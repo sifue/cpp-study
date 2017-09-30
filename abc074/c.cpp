@@ -63,5 +63,9 @@ int main() {
     }
   }
 
-  cout << (result_water + result_sugar) << " " << result_sugar << endl;
+  if (max_cons < 0) {
+    cout << A * 100 << " 0" << endl;
+  } else {
+    cout << (result_water + result_sugar) << " " << result_sugar << endl;
+  }
 }
