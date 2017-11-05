@@ -40,7 +40,7 @@ int main() {
   }
   sort(all(C));
 
-  int result = 0;
+  long long result = 0;
   rep(i, N) {
     // DEBUG(i);
     int b = B[i];
