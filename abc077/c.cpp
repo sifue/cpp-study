@@ -40,15 +40,15 @@ int main() {
   }
   sort(all(C));
 
-  long long result = 0;
+  ll result = 0;
   rep(i, N) {
     // DEBUG(i);
     int b = B[i];
     decltype(A)::iterator ita = lower_bound(A.begin(), A.end(), b);
-    int countA = ita - A.begin();
+    ll countA = ita - A.begin();
     // DEBUG(countA);
     decltype(C)::iterator itc = upper_bound(C.begin(), C.end(), b);
-    int countC = N - (itc - C.begin());
+    ll countC = N - (itc - C.begin());
     // DEBUG(countC);
     result = result + (countA * countC);
   }
