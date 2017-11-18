@@ -20,7 +20,6 @@ int main() {
   cin >> H >> W;
   ll C[10][10] = {0};
   int A[200][200] = {-1};
-
   rep(i, 10) {
     rep(j, 10) {
       cin >> C[i][j];
