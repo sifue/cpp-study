@@ -37,9 +37,9 @@ int main() {
   }
 
   // ワーシャルフロイドでコストを最小化
-  rep(i, 10) {
-    rep(j, 10) {
-      rep(k, 10) {
+  rep(k, 10) {
+    rep(i, 10) {
+      rep(j, 10) {
         C[i][j] = min(C[i][j], C[i][k] + C[k][j]);
       }
     }
