@@ -29,45 +29,49 @@ int main() {
     bPQ.push(bi);
   }
 
-  // 全部投げフェーズ
+  // 最大Aを求める、一番効率の良い切りを取得
+  int maxA = 0;
+  rep(i, N) {
+    maxA = max(maxA, a[i]);
+  }
+
+  // 全部投げフェーズ (ただし最大A)
   int throwAllTry = 0;
   int count = 0;
   
   while(!bPQ.empty() && throwAllTry < H) {
     int attack = bPQ.top();
     bPQ.pop();
-    throwAllTry += attack;
-    count++;
+    if(attack >= maxA) { // 切るより効率が良いやつだけ投げる
+      throwAllTry += attack;
+      count++;
+    }
   }
 
-  DEBUG(throwAllTry);
-  DEBUG(count);
+  // DEBUG(throwAllTry);
+  // DEBUG(count);
 
   if(throwAllTry >= H) {
     cout << count << endl;
     return 0;
   }
 
-  // 投げないものひとつを全探索して最小を探すフェーズ (ただし最後は投げる)
+  // 投げずに最大でカウント (ただし最後は投げる)
   int minCount = INF;
+  int totalDamage = 0;
+  int countNotThrow = 0;
+
   rep(i, N) {
-    DEBUG(i);
-    int totalDamage = 0;
-    int count = 0;
-
-    rep(j, N) {
-      totalDamage += b[j];
-      count++;
+    if(b[i] >= maxA) { // 切るより効率がいいやつだけ投げる
+      totalDamage += b[i];
+      countNotThrow++;
     }
-
-    while (totalDamage < H) {
-      totalDamage += a[i];
-      count++; 
-    }
-
-    DEBUG(count);
-    minCount = min(count, minCount);
   }
 
-  cout << minCount << endl;
+  while (totalDamage < H) {
+    totalDamage += maxA;
+    countNotThrow++; 
+  }
+
+  cout << countNotThrow << endl;
 }
