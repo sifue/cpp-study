@@ -7,7 +7,7 @@ typedef long long ll;
 #define rep(i, n) for(int i = 0; i < (n); i++)
 #define repto(i, n) for(int i = 0; i <= (n); i++)
 #define all(c) (c).begin(), (c).end()
-#define uniq(c) c.erase(unique(all(c)), (c).end()) // ちゃんとユニークな配列にする。連続した値を除去して切り出す。
+#define uniq(c) c.erase(unique(all(c)), (c).end()) // ユニークなvectorにする。連続した値を除去して切り出す。
 #define _1 first
 #define _2 second
 #define pb push_back
