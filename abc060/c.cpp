@@ -15,24 +15,28 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
-__attribute__((constructor))
-void initial() {
-  cin.tie(0);
-  ios::sync_with_stdio(false);
-}
-
 int main() {
-  int N;
-  cin >> N;
-  int maxPlayer = 0;
-  int minB = INF;
+  int N, T;
+  cin >> N >> T;
+  vector<int> t;
   rep(i, N) {
-    int A, B;
-    cin >> A >> B;
-    if (B < minB) {
-      maxPlayer = A + B;
-      minB = B;
-    }
+    int ti;
+    cin >> ti;
+    t.pb(ti);
   }
-  cout << maxPlayer << endl;
+
+  int sum = 0;
+  int i = 0;
+
+  while (i < (N - 1)) {
+    if((t[i + 1] - t[i]) < T) {
+      sum += (t[i + 1] - t[i]);
+    } else {
+      sum += T;
+    }
+    i++;
+  }
+  sum += T;
+
+  cout << sum << endl;
 }

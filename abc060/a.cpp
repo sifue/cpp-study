@@ -15,24 +15,13 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
-__attribute__((constructor))
-void initial() {
-  cin.tie(0);
-  ios::sync_with_stdio(false);
-}
-
 int main() {
-  int N;
-  cin >> N;
-  int maxPlayer = 0;
-  int minB = INF;
-  rep(i, N) {
-    int A, B;
-    cin >> A >> B;
-    if (B < minB) {
-      maxPlayer = A + B;
-      minB = B;
-    }
+  string A, B, C;
+  cin >> A >> B >> C;
+
+  if (A[A.length() - 1] == B[0] && B[B.length() - 1] == C[0]) {
+    cout << "YES" << endl;
+  } else {
+    cout << "NO" << endl;
   }
-  cout << maxPlayer << endl;
 }

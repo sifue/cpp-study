@@ -64,6 +64,7 @@ int main() {
       // 上
       i = p._1 - 1;
       j = p._2;
+      t = 
       if( i > 0 && j > 0 && i <= H && j <= W && s[i][j] == 1) {
         s[i][j] = -1;
         nextQ.push(make_pair(i, j));
