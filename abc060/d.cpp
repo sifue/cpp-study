@@ -15,43 +15,88 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
+__attribute__((constructor))
+void initial() {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+}
+
 int main() {
-  int N, W;
+  ll N, W;
   cin >> N >> W;
-  vector<int> w;
-  vector<int> v;
+
+  ll w0 = -1;
+
+  // key: w0 との diff value: vi の プライオリティキュー
+  map<ll, priority_queue<ll> > vm;
+  priority_queue<ll> q0;
+  vm.insert(make_pair(0, q0));
+  priority_queue<ll> q1;
+  vm.insert(make_pair(1, q1));
+  priority_queue<ll> q2;
+  vm.insert(make_pair(2, q2));
+  priority_queue<ll> q3;
+  vm.insert(make_pair(3, q3));
+
   rep(i, N) {
-    int wi, vi;
+    ll wi, vi;
     cin >> wi >> vi;
-    w.pb(wi);
-    w.pb(vi);
+    if(w0 == -1) {
+      w0 = wi;
+    }
+    ll diff = wi - w0;
+
+    // DEBUG(diff);
+    // DEBUG(vi);
+    vm.at(diff).push(vi);
   }
 
-  // wの総和になれるパターンは決まっている 
-  // (w1 * n) + ((最大+3) * n) 
-  // つまり n * (3*n) 分のパターンしか無い
-  // 3 * 100 * 100 = 30000
+  ll maxValue = 0;
+  repto(i0, vm.at(0).size()) {
+    repto(i1, vm.at(1).size()) { 
+      repto(i2, vm.at(2).size()) {
+        repto(i3, vm.at(3).size()) {
 
-  int MAX_N = 100;
-  int MAX_W = 30000; // w1 の n 回 + (0 〜 3 * n)のパターン
+          // DEBUG(i0);
+          // DEBUG(i1);
+          // DEBUG(i2);
+          // DEBUG(i3);
 
-  int dp[MAX_N][MAX_W] = {};
+          ll wsum = i0 * w0 + i1 * w0 + i2 * w0 + i3 * w0;
+          wsum += i1 * 1 + i2 * 2 + i3 * 3;
+          if(wsum <= W) {
+            ll vsum = 0;
 
-  // Wになれるパターンづくり
-  vector<int> wpattern;
-  int w1 = w[0];
-  rep(i, N) {
-    int w1n = w1 * i;
-    rep(j, (3 * i) + 1) {
-      wpattern.pb(w1n + j);
+            priority_queue<ll> cq0 = vm.at(0);
+            rep(i, i0) {
+              vsum += cq0.top();
+              cq0.pop();
+            }
+
+            priority_queue<ll> cq1 = vm.at(1);
+            rep(i, i1) {
+              vsum += cq1.top();
+              cq1.pop();
+            }
+
+            priority_queue<ll> cq2 = vm.at(2);
+            rep(i, i2) {
+              vsum += cq2.top();
+              cq2.pop();
+            }
+
+            priority_queue<ll> cq3 = vm.at(3);
+            rep(i, i3) {
+              vsum += cq3.top();
+              cq3.pop();
+            }
+
+            maxValue = max(maxValue, vsum);
+          }
+        }
+        // DEBUG(maxValue);
+      }
     }
   }
-
-  rep(i, N) {
-    rep(j, wpattern.size()) {
-      // TODO DP
-    }
-  }
-
-  cout << dp[N - 1][wpattern.size() -1] << endl;
+  cout << maxValue << endl;
 }
