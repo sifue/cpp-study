@@ -15,10 +15,33 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
+int result = 0;
+int selectableRed[101][101] = {}; // i: 青, j: 赤
+
 __attribute__((constructor))
 void initial() {
   cin.tie(0);
   ios::sync_with_stdio(false);
+}
+
+
+void dfs(int bi, int N, int pairCount) {
+  DEBUG(bi);
+  if (bi == N) {
+    // 終了、最大値更新
+    result = max(pairCount, result);
+    return;
+  }
+
+  // 未選択
+  dfs(bi + 1, N, pairCount);
+
+  rep(ri, N) {
+
+    if(selectableRed[bi][ri] == 1) { // 選択可能なら選択
+      dfs(bi + 1, N, pairCount + 1);
+    }
+  }
 }
 
 int main() {
@@ -28,6 +51,7 @@ int main() {
   vector<P> reds;
   vector<P> blues;
 
+  // ソートして読み込み
   rep(i, N) {
     int ai, bi;
     cin >> ai >> bi;
@@ -52,31 +76,18 @@ int main() {
   //   cout << "(" << p._1 << ":"  << p._2 << ")" << endl;
   // });
 
-  // 青の一番でかいものから貪欲法でペア作り
-  int result = 0;
-  set<P> selectedRed;
-
+  // 青に対して選択可能な赤を作成
   for(int i = 0; i < blues.size(); i++) {
     for(int j = 0; j < reds.size(); j++) {
       P blue = blues[i];
       P red = reds[j];
-      // DEBUG(blue._1);
-      // DEBUG(blue._2);
-      // DEBUG(red._1);
-      // DEBUG(red._2);
-
-      // 赤未選択かつ条件満たす
-      if (selectedRed.count(red) == 0 && red._1 < blue._1 && red._2 < blue._2) { 
-        result++;
-        // DEBUG(result);
-        // 見つかったら
-        i++; // blue は次へ
-        j = -1; // red は最初から 最後にインクリメントされるので -1
-        selectedRed.insert(red); // 選択済みに追加
+      if (red._1 < blue._1 && red._2 < blue._2) { 
+        selectableRed[i][j] = 1;
       }
-      // DEBUG("-----");
     }
   }
+
+  dfs(0, N, 0);
 
   cout << result << endl;
 }
