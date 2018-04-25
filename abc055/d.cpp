@@ -56,10 +56,33 @@ int main() {
 
     for (int i = 1; i <= N; i++) {
       if (i == N) { // 最後まで終わったらチェック
-        if(animals[0] == animals[i]) { // 合致してOKの場合
-          isOK = true;
+        if(animals[0] == animals[i]) { // 合致している
+
+          if (animals[0] == 'S') {
+            if (s[0] == 'o') {
+              if(animals[N - 1] == animals[1]) {
+                isOK = true;
+              }
+            } else {
+              if(animals[N - 1] != animals[1]) {
+                isOK = true;
+              }
+            }
+          } else {
+            if (s[i] == 'o') {
+              if(animals[N - 1] != animals[1]) {
+                isOK = true;
+              }
+            } else {
+              if(animals[N - 1] == animals[1]) {
+                isOK = true;
+              }
+            }
+          }
         }
+
       } else { // 1 ~ N-1 まで
+
         if (animals[i] == 'S') {
           if (s[i] == 'o') {
             animals[i + 1] = animals[i - 1];
@@ -73,6 +96,7 @@ int main() {
             animals[i + 1] = animals[i - 1];
           }
         }
+        
       }
     }
 
