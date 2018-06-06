@@ -21,57 +21,50 @@ void initial() {
   ios::sync_with_stdio(false);
 }
 
-int search(int row, int column, int count, vector<vector<int>> V) {
-  if (column == 4) return count;
+int h, n;
+vector<int> b;
 
-  // 置く場合
-  if (V[row][column] == 0 &&
-      V[row][column + 1] == 0 &&
-      V[row - 1][column] == 0 &&
-      V[row - 1][column + 1] == 0)) {
+int dp[10000][8];
 
-      vector<vector<int>> nextV = V;
-      
-
+int dfs(int i = 1, int bit = 0) {
+  if (i == h) { // 最後まで来た場合
+    return 0;
   }
+  bit |= b[i]; // 置ける状況を取得
 
+  int &ret = dp[i][bit]; // おける最大数、配列の中身を変えたいので参照取得
+  if (~ret)
+    return ret;  // 計算済みなら返す  retが-1だと~retは0となり計算するために次へ
 
-  // 置かない場合
-  int count1 =  search(row, column + 1, count, state);
+  ret = 0;
+  if (bit == 0) // 2つ置く場合
+    ret = max(ret, dfs(i + 1, 0b111) + 2);
+  if ((bit & (0b100)) == 0) // 左に置く場合
+    ret = max(ret, dfs(i + 1, 0b110) + 1);
+  if ((bit & (0b010)) == 0) // 中に置く場合
+    ret = max(ret, dfs(i + 1, 0b111) + 1);
+  if ((bit & (0b001)) == 0) // 右に置く場合
+    ret = max(ret, dfs(i + 1, 0b011) + 1);
+  ret = max(ret, dfs(i + 1, 0)); // 置かない場合
 
-  return max(count0, count1);
+  // 5パターンの最大値がretに
+  return ret;
 }
 
 int main() {
-  int H, N;
-  cin >> H >> N;
+  memset(dp, -1, sizeof(dp));
+  cin >> h >> n;
 
-  // Hを増やしながらDPしていく 0:なし、1:おけない 2: 荷物 
-
-  int maxRowCount = 10000;
-  vector<vector<int>> V;
-  V.resize(maxRowCount);
-  rep (i, maxRowCount) {
-    V[i].resize(4);
-    rep (j, maxRowCount){
-      V[i][j] = 0;
-    }
-  }
-
-  rep(i, N) {
+  // eiはそれぞれ x の値に対応するおけない箇所
+  int ei[4] = {0b100, 0b110, 0b011, 0b001};
+  b.assign(h + 1, 0);
+  for (int i = 0; i < n; ++i) {
     int x, y;
     cin >> x >> y;
-    V[x][y] = 1;
+    // 置けなくなる箇所をパターンとして用意
+    b[y + 1] |= ei[x];
+    b[y] |= ei[x];
   }
 
-  int totalCount = 0;
-  // i 行が増えたという形でループする
-  for (int i = 2; i < H; i++) {
-
-
-    // i行目が増えた時に最大数、countを増加
-
-
-  }
-  cout << maxPlayer << endl;
+  cout << dfs() << endl;
 }
