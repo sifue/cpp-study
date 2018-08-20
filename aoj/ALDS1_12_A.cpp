@@ -29,8 +29,6 @@ int main() {
   int N;
   cin >> N;
   
-  T[0] = TAKEN;
-
   rep(i, N) {
     rep(j, N) {
       int w;
@@ -40,14 +38,17 @@ int main() {
       } else {
          E[i][j] = w;
       }
+      // DEBUG(E[i][j]);	
 	}
   }
  
+  T[0] = TAKEN;
   int count = 1; 
   int sum = 0;
 
   while (count < N) {
     int minW = INF;
+    int minI = -1;
     int minJ = -1;
     rep(i, N) {
        if (T[i] == TAKEN) {
@@ -55,17 +56,28 @@ int main() {
 			if(T[j] != TAKEN) {
               int w = E[i][j];
               if (w < minW) {
+//                DEBUG(i);
+//                DEBUG(j);
+//                DEBUG(w);
                 minW = w;
+                minI = i;
                 minJ = j;
               }
 			}
           }
        }
     }
-    DEBUG(minJ);
-    DEBUG(minW);
+//    DEBUG("--------------------");
+//    DEBUG(minI);
+//    DEBUG(minJ);
+//    DEBUG(minW);
 
-	T[minJ] == TAKEN;
+	T[minJ] = TAKEN;
+//	rep (i , N) {
+//		DEBUG(i);
+//		DEBUG(T[i]);
+//	}
+
 	count++;
 	sum += minW;
   }
