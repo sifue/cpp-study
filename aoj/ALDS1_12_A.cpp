@@ -62,8 +62,8 @@ int main() {
           }
        }
     }
-//    DEBUG(minJ);
-//    DEBUG(minW);
+    DEBUG(minJ);
+    DEBUG(minW);
 
 	T[minJ] == TAKEN;
 	count++;
