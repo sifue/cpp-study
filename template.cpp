@@ -4,6 +4,7 @@ using namespace std;
 
 typedef pair<int, int> P;
 typedef long long ll;
+
 #define rep(i, n) for(int i = 0; i < (n); i++)
 #define repto(i, n) for(int i = 0; i <= (n); i++)
 #define all(c) (c).begin(), (c).end()
@@ -17,22 +18,22 @@ typedef long long ll;
 
 __attribute__((constructor))
 void initial() {
-  cin.tie(0);
-  ios::sync_with_stdio(false);
+    cin.tie(0);
+    ios::sync_with_stdio(false);
 }
 
 int main() {
-  int N;
-  cin >> N;
-  int maxPlayer = 0;
-  int minB = INF;
-  rep(i, N) {
-    int A, B;
-    cin >> A >> B;
-    if (B < minB) {
-      maxPlayer = A + B;
-      minB = B;
-    }
-  }
-  cout << maxPlayer << endl;
+   int N;
+   cin >> N;
+   int maxPlayer = 0;
+   int minB = INF;
+   rep(i, N) {
+       int A, B;
+       cin >> A >> B;
+       if (B < minB) {
+         maxPlayer = A + B;
+         minB = B;
+       }
+   }
+   cout << maxPlayer << endl;
 }
