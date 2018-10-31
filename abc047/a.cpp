@@ -23,17 +23,13 @@ void initial() {
 }
 
 int main() {
-   int N;
-   cin >> N;
-   int maxPlayer = 0;
-   int minB = INF;
-   rep(i, N) {
-       int A, B;
-       cin >> A >> B;
-       if (B < minB) {
-         maxPlayer = A + B;
-         minB = B;
-       }
+   int a, b, c;
+   cin >> a >> b >> c;
+   if (a + c == b ||
+       a + b == c ||
+       b + c == a ) {
+    cout << "Yes" << endl;
+   } else {
+    cout << "No" << endl;
    }
-   cout << maxPlayer << endl;
 }
