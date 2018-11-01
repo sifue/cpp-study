@@ -23,17 +23,11 @@ void initial() {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
-    rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
-        }
+    ll N, K;
+    cin >> N >> K;
+    ll count = K;
+    for (int i = 1; i < N; ++i) {
+        count *= (K - 1);
     }
-    cout << maxPlayer << endl;
+    cout << count << endl;
 }

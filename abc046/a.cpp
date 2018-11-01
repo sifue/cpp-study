@@ -23,17 +23,16 @@ void initial() {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
+    int a, b, c;
+    int N = 101;
+    int ary[N] = {0};
+    cin >> a >> b >> c;
+    ary[a] = 1;
+    ary[b] = 1;
+    ary[c] = 1;
+    int count = 0;
     rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
-        }
+        count += ary[i];
     }
-    cout << maxPlayer << endl;
+    cout << count << endl;
 }

@@ -8,7 +8,7 @@ typedef long long ll;
 #define rep(i, n) for(int i = 0; i < (n); i++)
 #define repto(i, n) for(int i = 0; i <= (n); i++)
 #define all(c) (c).begin(), (c).end()
-#define uniq(c) c.erase(unique(all(c)), (c).end())
+#define uniq(c) c.erase(unique(all(c)), (c).end()) // ユニークなvectorにする。連続した値を除去して切り出す。
 #define _1 first
 #define _2 second
 #define pb push_back
@@ -23,17 +23,18 @@ void initial() {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
-    rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
-        }
-    }
-    cout << maxPlayer << endl;
+   char c;
+   cin >> c;
+
+   if (
+       c == 'a' ||
+       c == 'e' ||
+       c == 'i' ||
+       c == 'o' ||
+       c == 'u'
+      ) {
+       cout << "vowel" << endl;
+   } else {
+       cout << "consonant" << endl;
+   }
 }
