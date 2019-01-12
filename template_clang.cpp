@@ -17,6 +17,8 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
+int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
+
 bool isEnd(vector<int> sushis, vector<int> eatings) {
     int sum = 0;
 

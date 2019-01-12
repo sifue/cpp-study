@@ -16,8 +16,6 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
-int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
-
 __attribute__((constructor))
 void initial() {
     cin.tie(0);
@@ -25,17 +23,7 @@ void initial() {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
-    rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
-        }
-    }
-    cout << maxPlayer << endl;
+    int N, H, W;
+    cin >> N >> H >> W;
+    cout << (N-H+1) * (N-W+1)  << endl;
 }

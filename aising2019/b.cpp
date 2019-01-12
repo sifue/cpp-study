@@ -16,8 +16,6 @@ typedef long long ll;
 #define MOD 1000000007
 #define DEBUG(x) cout << #x << ": " << x << endl;
 
-int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
-
 __attribute__((constructor))
 void initial() {
     cin.tie(0);
@@ -25,17 +23,22 @@ void initial() {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
+    int N, A, B;
+    cin >> N >> A >> B;
+    vector<int> P1;
+    vector<int> P2;
+    vector<int> P3;
     rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
+        int pi;
+        cin >> pi;
+        if (A >= pi) {
+            P1.pb(pi);
+        } else if (A < pi && B >= pi) {
+            P2.pb(pi);
+        } else {
+            P3.pb(pi);
         }
     }
-    cout << maxPlayer << endl;
+    int result = min(P1.size(), min(P2.size(), P3.size()));
+    cout << result << endl;
 }
