@@ -25,9 +25,20 @@ void initial() {
 struct Sushi {
     int i;
     ll d;
+    int t;
     int typeCount;
     bool operator<( const Sushi& right ) const {
-        return d == right.d ? typeCount < right.typeCount : d > right.d;
+        return d > right.d;
+    }
+};
+
+struct SushiOut {
+    int i;
+    ll d;
+    int t;
+    int typeCount;
+    bool operator<( const SushiOut& right ) const {
+        return typeCount == right.typeCount ? d < right.d : typeCount > right.typeCount;
     }
 };
 
@@ -51,25 +62,63 @@ int main() {
         Sushi s;
         s.i = i;
         s.d = d[i];
+        s.t = t[i];
         s.typeCount = typeCount[t[i]];
         sushis.pb(s);
    }
 
    sort(all(sushis));
 
-//   rep(i, sushis.size())  {
-//       DEBUG("------");
-//       DEBUG(sushis[i].i);
-//       DEBUG(sushis[i].d);
-//       DEBUG(sushis[i].typeCount);
-//   }
+   rep(i, sushis.size())  {
+       DEBUG("------");
+       DEBUG(sushis[i].i);
+       DEBUG(sushis[i].d);
+       DEBUG(sushis[i].typeCount);
+   }
+
+    set<int> eatenType;
+    priority_queue<SushiOut> q;
+    vector<Sushi> notSelected;
+    rep(i, N) {
+        if (i < K) {
+            eatenType.insert(sushis[i].i);
+            SushiOut so;
+            so.i = sushis[i].i;
+            so.d = sushis[i].d;
+            so.t = sushis[i].t;
+            so.typeCount = sushis[i].typeCount;
+            q.push(so);
+        } else {
+            notSelected.pb(sushis[i]);
+        }
+    }
+
+    while(q.top().typeCount > 1) {
+        rep(i, notSelected.size()) {
+            if (eatenType.count(notSelected[i].i) == 0) {
+                DEBUG("Change!---");
+                DEBUG(q.top().i);
+                DEBUG(notSelected[i].i);
+                eatenType.erase(q.top().i);
+                q.pop();
+                eatenType.insert(notSelected[i].i);
+                SushiOut so;
+                so.i = notSelected[i].i;
+                so.d = notSelected[i].d;
+                so.t = notSelected[i].t;
+                so.typeCount = notSelected[i].typeCount;
+                q.push(so);
+                break;
+            }
+        }
+    }
 
     ll sum = 0;
-    set<int> eaten;
-    rep(i, K) {
-        sum += sushis[i].d;
-        eaten.insert(t[sushis[i].i]);
+    while (q.size() > 0) {
+        sum += q.top().d;
+        q.pop();
     }
-    ll result = sum + eaten.size() * eaten.size();
+
+    ll result = sum + eatenType.size() * eatenType.size();
     cout << result << endl;
 }
