@@ -30,9 +30,8 @@ int main() {
     cin >> K >> S;
     repto(x, K) {
         repto(y, K) {
-            repto(z, K) {
-                if ( x + y + z == S) result++;
-            }
+            int z = S - (x + y);
+            if (0 <= z && z <= K) result++;
         }
     }
     cout << result << endl;
