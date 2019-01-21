@@ -26,7 +26,6 @@ struct Sushi {
     int i;
     ll d;
     int t;
-    int typeCount;
     bool operator<( const Sushi& right ) const {
         return d > right.d;
     }
@@ -36,16 +35,27 @@ struct SushiOut {
     int i;
     ll d;
     int t;
-    int typeCount;
     bool operator<( const SushiOut& right ) const {
-        return typeCount == right.typeCount ? d < right.d : typeCount > right.typeCount;
+        return d > right.d;
     }
 };
 
 ll t[100001] = {0};
 ll d[100001] = {0};
-ll typeCount[100001] = {0};
 vector<Sushi> sushis;
+
+ll getPoint(priority_queue<SushiOut> q) {
+    ll sum = 0;
+    set<int> eatenType;
+    while (q.size() > 0) {
+        sum += q.top().d;
+        eatenType.insert(q.top().t);
+        q.pop();
+    }
+
+    ll result = sum + eatenType.size() * eatenType.size();
+    return result;
+}
 
 int main() {
     int N, K;
@@ -55,7 +65,6 @@ int main() {
         cin >> ti >> di;
         t[i] = ti;
         d[i] = di;
-        typeCount[ti]++;
     }
 
    rep(i, N) {
@@ -63,7 +72,6 @@ int main() {
         s.i = i;
         s.d = d[i];
         s.t = t[i];
-        s.typeCount = typeCount[t[i]];
         sushis.pb(s);
    }
 
@@ -73,52 +81,81 @@ int main() {
        DEBUG("------");
        DEBUG(sushis[i].i);
        DEBUG(sushis[i].d);
-       DEBUG(sushis[i].typeCount);
+       DEBUG(sushis[i].t);
    }
 
-    set<int> eatenType;
+    int typeCount[100001] = {0};
     priority_queue<SushiOut> q;
-    vector<Sushi> notSelected;
+    vector<SushiOut> notSelected;
     rep(i, N) {
+        SushiOut so;
+        so.i = sushis[i].i;
+        so.d = sushis[i].d;
+        so.t = sushis[i].t;
         if (i < K) {
-            eatenType.insert(sushis[i].i);
-            SushiOut so;
-            so.i = sushis[i].i;
-            so.d = sushis[i].d;
-            so.t = sushis[i].t;
-            so.typeCount = sushis[i].typeCount;
+            typeCount[so.t]++;
             q.push(so);
         } else {
-            notSelected.pb(sushis[i]);
+            notSelected.pb(so);
         }
     }
 
-    while(q.top().typeCount > 1) {
-        rep(i, notSelected.size()) {
-            if (eatenType.count(notSelected[i].i) == 0) {
-                DEBUG("Change!---");
-                DEBUG(q.top().i);
-                DEBUG(notSelected[i].i);
-                eatenType.erase(q.top().i);
-                q.pop();
-                eatenType.insert(notSelected[i].i);
-                SushiOut so;
-                so.i = notSelected[i].i;
-                so.d = notSelected[i].d;
-                so.t = notSelected[i].t;
-                so.typeCount = notSelected[i].typeCount;
-                q.push(so);
-                break;
+    priority_queue<SushiOut> qp = q;
+    while (qp.size() > 0) {
+        DEBUG("------");
+        DEBUG(qp.top().i);
+        DEBUG(qp.top().d);
+        DEBUG(qp.top().t);
+        qp.pop();
+    }
+
+    DEBUG("---入れ替え処理---");
+
+    ll currentMax = 0;
+    ll nextMax = getPoint(q);
+    do {
+        currentMax = nextMax;
+        nextMax = 0;
+        priority_queue<SushiOut> newQ;
+        int newTypeCount[100001] = {0};
+        bool isFound = false;
+        while (q.size() > 0) {
+            DEBUG(q.top().i);
+            DEBUG(q.top().d);
+            DEBUG(q.top().t);
+            DEBUG(typeCount[q.top().t]);
+            if (typeCount[q.top().t] > 1 && !isFound) {
+                DEBUG("---重複発見！---");
+                DEBUG(q.top().t);
+                isFound = true;
+            } else {
+                newQ.push(q.top());
+                newTypeCount[q.top().t]++;
+            }
+            q.pop();
+        }
+
+        rep(i, notSelected.size())  {
+            DEBUG("------");
+            DEBUG(notSelected[i].i);
+            DEBUG(notSelected[i].d);
+            DEBUG(notSelected[i].t);
+        }
+
+        if (isFound) {
+            rep (i, notSelected.size()) {
+                if (newTypeCount[notSelected[i].t] == 0) {
+                    newQ.push(notSelected[i]);
+                    break;
+                }
             }
         }
-    }
+        nextMax = getPoint(newQ);
+        DEBUG(newQ.size());
+        DEBUG(currentMax);
+        DEBUG(nextMax);
+        q = newQ;
+    } while (currentMax < nextMax);
 
-    ll sum = 0;
-    while (q.size() > 0) {
-        sum += q.top().d;
-        q.pop();
-    }
-
-    ll result = sum + eatenType.size() * eatenType.size();
-    cout << result << endl;
+    cout << currentMax << endl;
 }
