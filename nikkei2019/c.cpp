@@ -18,33 +18,15 @@ typedef long long ll;
 
 int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
 
-struct DishA {
+struct Dish {
     int i;
-    ll diff;
     ll a;
     ll b;
-    bool operator<( const DishA& right ) const {
-        if (diff == right.diff) {
-            return a < right.a;
-        } else {
-            return diff > right.diff;
-        }
+    bool operator<( const Dish& right ) const {
+            return (a+b) < (right.a + right.b);
     }
 };
 
-struct DishB {
-    int i;
-    ll diff;
-    ll a;
-    ll b;
-    bool operator<( const DishB& right ) const {
-        if (diff == right.diff) {
-            return b < right.b;
-        } else {
-            return diff > right.diff;
-        }
-    }
-};
 __attribute__((constructor)) void initial() {
     cin.tie(0);
     ios::sync_with_stdio(false);
@@ -53,34 +35,24 @@ __attribute__((constructor)) void initial() {
 int main() {
     int N;
     cin >> N;
-    priority_queue<DishA> queA;
-    priority_queue<DishB> queB;
+    priority_queue<Dish> que;
     rep(i, N) {
         int A, B;
         cin >> A >> B;
 
-        DishA da;
-        da.i = i;
-        da.diff = A-B;
-        da.a = A;
-        da.b = B;
-        queA.push(da);
-
-        DishB db;
-        db.i = i;
-        db.diff = A-B;
-        db.a = A;
-        db.b = B;
-        queB.push(db);
+        Dish d;
+        d.i = i;
+        d.a = A;
+        d.b = B;
+        que.push(d);
     }
 
-    // while (!queA.empty()) {
-    //     DEBUG(queA.top().i);
-    //     DEBUG(queA.top().a);
-    //     DEBUG(queA.top().b);
-    //     DEBUG(queA.top().diff);
-    //     queA.pop();
-    // }
+    //while (!que.empty()) {
+    //    DEBUG(que.top().i);
+    //    DEBUG(que.top().a);
+    //    DEBUG(que.top().b);
+    //    que.pop();
+    //}
     // cout << "------------" << endl;
     // while (!queB.empty()) {
     //     DEBUG(queB.top().i);
@@ -91,26 +63,22 @@ int main() {
     // }
 
     bool isA = true;
-    set<int> delSet;
     ll sumA = 0;
     ll sumB = 0;
-    while (!queA.empty() && !queB.empty()) {
+    while (!que.empty()) {
         if (isA) {
-            while(delSet.count(queA.top().i) != 0) queA.pop();
-            sumA += queA.top().a;
-            delSet.insert(queA.top().i);
+    //        DEBUG(que.top().a);
+            sumA += que.top().a;
             isA = false;
-            queA.pop();
         } else {
-            while(delSet.count(queB.top().i) != 0) queB.pop();
-            sumB += queB.top().b;
-            delSet.insert(queB.top().i);
+    //       DEBUG(que.top().b);
+            sumB += que.top().b;
             isA = true;
-            queB.pop();
         }
+        que.pop();
     }
-//     DEBUG(sumA);
-//     DEBUG(sumB);
+   // DEBUG(sumA);
+   // DEBUG(sumB);
     cout << (sumA - sumB) << endl;
 
 }
