@@ -23,18 +23,18 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
+ll minN = INF;
+
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
-    rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
-        }
+    int D, G;
+    cin >> D >> G;
+    vector<ll> p;
+    vector<ll> c;
+    rep(i, D) {
+        int pi, ci;
+        cin >> pi >> ci;
+        p.pb(pi);
+        c.pb(ci);
     }
     cout << maxPlayer << endl;
 }
