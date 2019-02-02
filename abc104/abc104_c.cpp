@@ -23,18 +23,35 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
-ll minN = INF;
+int minN = INF;
+int D, G;
+vector<ll> p;
+vector<ll> c;
+
+void dfs(int i, int n, ll sum) {
+    DEBUG(i);
+    DEBUG(n);
+    DEBUG(sum);
+    cout << "------------" << endl;
+  if (i == D && sum >= G) {
+    minN = min(minN, n);
+  }
+
+  repto(j, p[i]) {
+      ll lsum = sum + ((i+1) * 100) * j;
+      if (j == p[i]) lsum += c[i];
+      dfs(i+1, n+j, lsum);
+  }
+}
 
 int main() {
-    int D, G;
     cin >> D >> G;
-    vector<ll> p;
-    vector<ll> c;
     rep(i, D) {
         int pi, ci;
         cin >> pi >> ci;
         p.pb(pi);
         c.pb(ci);
     }
-    cout << maxPlayer << endl;
+    dfs(0, 0, 0);
+    cout << minN << endl;
 }
