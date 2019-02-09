@@ -23,33 +23,22 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
-int arrived[5] = {0};
-int path[5][5] = {0};
-
-void dfs(int start) {
-    if (start == 0) return;
-    if (arrived[start] == 1) return;
-    arrived[start] = 1;
-    for (int t = 1; t < 5; t++) {
-        if(path[start][t]) {
-            path[start][t] = 0;
-            path[t][start] = 0;
-            dfs(t);
-        }
-    }
-}
+int cnt[5] = {0};
 
 int main() {
-    rep(i, 3) {
-        int a, b;
-        cin >> a >> b;
-        path[a][b] = 1;
-        path[b][a] = 1;
+    rep(i, 6) {
+        int a;
+        cin >> a;
+        cnt[a]++;
     }
-    dfs(1);
-    bool isAll = true;
+
+    bool isAllContain = true;
     for (int i = 1; i <= 4; i++) {
-        if (arrived[i] == 0) isAll = false;
+        if (cnt[i] == 0) isAllContain = false;
     }
-    cout << (isAll ? "YES" : "NO") << endl;
+    bool isAllNotOver2 = true;
+    for (int i = 1; i <= 4; i++) {
+        if (cnt[i] > 2) isAllNotOver2 = false;
+    }
+    cout << ((isAllContain && isAllNotOver2)? "YES" : "NO") << endl;
 }
