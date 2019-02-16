@@ -23,14 +23,14 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
-ll euclidean_gcd(ll a,  ll b) {
-  if(a < b) euclidean_gcd(b, a);
-  ll r;
-  while ((r=a%b)) {
-    a = b;
-    b = r;
-  }
-  return b;
+ll euclidean_gcd(ll a, ll b) {
+    if(a < b) euclidean_gcd(b, a);
+    ll r;
+    while ((r = a % b)) {
+        a = b;
+        b = r;
+    }
+    return b;
 }
 
 int main() {
@@ -40,7 +40,7 @@ int main() {
     rep(i, N) {
         ll ai;
         cin >> ai;
-        A.pb(ai); 
+        A.pb(ai);
     }
 
     ll result = A[0];
