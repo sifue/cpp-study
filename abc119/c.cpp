@@ -23,90 +23,38 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
+int N, A, B, C;
+int cost = INF;
+vector<int> l;
+
+
+void dfs(int i, int curCost, int curA, int curB, int curC) {
+    if (curA > 0 && curB > 0 && curC > 0) {
+        int totalCost = curCost;
+        totalCost += abs(A - curA);
+        totalCost += abs(B - curB);
+        totalCost += abs(C - curC);
+        cost = min (totalCost, cost);
+    }
+
+    if (i >= N) return;
+
+    dfs(i + 1, curA > 0 ? curCost + 10 : curCost, curA + l[i], curB, curC);
+    dfs(i + 1, curB > 0 ? curCost + 10 : curCost, curA, curB + l[i], curC);
+    dfs(i + 1, curC > 0 ? curCost + 10 : curCost, curA, curB, curC + l[i]);
+    dfs(i + 1, curCost, curA, curB, curC); // 使わない
+}
 
 int main() {
-    int N;
-    vector<int> l;
-    vector<int> t;
-    bool used[8] = {0};
-    int current[3] = {0};
-    int cost = 0;
-
-    cin >> N;
-    rep(i, 3) {
-        int ti;
-        cin >> ti;
-        t.pb(ti);
-    }
+    cin >> N >> A >> B >> C;
 
     rep(i, N) {
         int li;
         cin >> li;
         l.pb(li);
     }
-    sort(all(l));
-    reverse(all(l));
-    sort(all(t));
-    reverse(all(t));
 
-    // 9以下で一番近いのから埋める、A, B, C順に
-    rep(j, 3) {
-        int diff = INF;
-        int tIndex = -1;
-
-        rep(i, N) {
-            int tempDiff = abs(t[j] - l[i]);
-            if (tempDiff < diff
-                    && !used[i]) {
-                diff  = tempDiff;
-                tIndex = i;
-            }
-        }
-
-        current[j] += l[tIndex];
-        used[tIndex] = 1;
-
-        DEBUG(j);
-        DEBUG(tIndex);
-        DEBUG(l[tIndex]);
-    }
-
-    // 残ったもので合成魔法でで最適化できるところまでやる
-    int done = -1;
-    while (done != 0) {
-        done = 0;
-        rep (j, 3) {
-            int effect = -1;
-            int tIndex = -1;
-            rep (i, N) {
-                if (!used[i]) {
-                    // 足して目的との差分を見る
-                    int currentDiff = abs(t[j] - current[j]);
-                    int tempDiff = abs(t[j] - (current[j] + l[i]));
-                    int tempEffect = currentDiff - tempDiff;
-
-                    if (tempEffect > 10 // 結合して10以上近づいた
-                           && tempEffect > effect
-                           ) {
-                       effect  = tempEffect;
-                       tIndex = i;
-                    }
-               }
-            }
-
-            if (tIndex >= 0) {
-                done++;
-                current[j] += l[tIndex];
-                used[tIndex] = 1;
-                cost += 10;
-            }
-        }
-    }
-
-    // 最後に調整コスト
-    rep (j, 3) {
-        cost += abs(t[j] - current[j]);
-    }
+    dfs(0,0,0,0,0);
 
     cout << cost << endl;
 }
