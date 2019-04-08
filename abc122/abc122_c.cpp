@@ -23,18 +23,28 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
+int cnt[100001] = {0};
+
 int main() {
-    int N;
-    cin >> N;
-    int maxPlayer = 0;
-    int minB = INF;
+    int N, Q;
+    cin >> N >> Q;
+    string S;
+    cin >> S;
+
+    char pre = 'C';
+    int count = 0;
     rep(i, N) {
-        int A, B;
-        cin >> A >> B;
-        if (B < minB) {
-            maxPlayer = A + B;
-            minB = B;
-        }
+            if (pre == 'A' && S[i] == 'C') {
+                count += 1;
+            }
+        cnt[i] = count;
+        pre = S[i];
     }
-    cout << maxPlayer << endl;
+
+    rep(i, Q) {
+        int l, r;
+        cin >> l >> r;
+        int result = cnt[r-1] - cnt[l-1];
+        cout << result << endl;
+    }
 }
