@@ -34,12 +34,14 @@ int main() {
     int maxResult = 0;
     char pre = '.';
     int maxL = -1;
+    int tmpL = 0;
     int maxR = -1;
 
     rep(i, S.length()) {
         if (S[i] != pre && S[i] == '0') { // 前と違い0
             result = revCnt + 1;
             revCnt = 0;
+            tmpL = 0;
         } else if (S[i] != pre && S[i] == '1') { // 前と違い1
             revCnt = 1;
             result++;
@@ -52,10 +54,17 @@ int main() {
         }
         maxResult = max(maxResult, result);
 
+        if (maxResult == result) {
+            maxL = tmpL;
+            maxR = i;
+        }
+
         DEBUG(i);
         DEBUG(revCnt);
         DEBUG(S[i]);
         DEBUG(result);
+        DEBUG(maxL);
+        DEBUG(maxR);
         cout << "------------" << endl;
 
         pre = S[i];
