@@ -23,98 +23,89 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
-int cnt[100001] = {0};
-vector<ll> result;
-vector<P> bridge;
-ll maxInconv;
+// 素集合データ構造 UnionFind T(N); で構築
+struct UnionFind
+{
+  // par[i]：データiが属する木の親の番号。i == par[i]のとき、データiは木の根ノードである
+  vector<int> par;
+  // sizes[i]：根ノードiの木に含まれるデータの数。iが根ノードでない場合は無意味な値となる
+  vector<int> sizes;
 
-struct UnionFind {
-    vector<int> par; // par[i]:iの親の番号　(例) par[3] = 2 : 3の親が2
+  UnionFind(int n) : par(n), sizes(n, 1) {
+    // 最初は全てのデータiがグループiに存在するものとして初期化
+    rep(i,n) par[i] = i;
+  }
 
-    UnionFind(int N) : par(N) { //最初は全てが根であるとして初期化
-        for(int i = 0; i < N; i++) par[i] = i;
-    }
+  // データxが属する木の根を得る
+  int find(int x) {
+    if (x == par[x]) return x;
+    return par[x] = find(par[x]);  // 根を張り替えながら再帰的に根ノードを探す
+  }
 
-    int root(int x) { // データxが属する木の根を再帰で得る：root(x) = {xの木の根}
-        if (par[x] == x) return x;
-        return par[x] = root(par[x]);
-    }
+  // 2つのデータx, yが属する木をマージする
+  void unite(int x, int y) {
+    // データの根ノードを得る
+    x = find(x);
+    y = find(y);
 
-    void unite(int x, int y) { // xとyの木を併合
-        int rx = root(x); //xの根をrx
-        int ry = root(y); //yの根をry
-        if (rx == ry) return; //xとyの根が同じ(=同じ木にある)時はそのまま
-        par[rx] = ry; //xとyの根が同じでない(=同じ木にない)時：xの根rxをyの根ryにつける
-    }
+    // 既に同じ木に属しているならマージしない
+    if (x == y) return;
 
-    bool same(int x, int y) { // 2つのデータx, yが属する木が同じならtrueを返す
-        int rx = root(x);
-        int ry = root(y);
-        return rx == ry;
-    }
+    // xの木がyの木より大きくなるようにする
+    if (sizes[x] < sizes[y]) swap(x, y);
+
+    // xがyの親になるように連結する
+    par[y] = x;
+    sizes[x] += sizes[y];
+    // sizes[y] = 0;  // sizes[y]は無意味な値となるので0を入れておいてもよい
+  }
+
+  // 2つのデータx, yが属する木が同じならtrueを返す
+  bool same(int x, int y) {
+    return find(x) == find(y);
+  }
+
+  // データxが含まれる木の大きさを返す
+  int size(int x) {
+    return sizes[find(x)];
+  }
 };
 
 int main() {
     int N, M;
     cin >> N >> M;
+    vector<P> path;
     rep(i, M) {
         int A, B;
         cin >> A >> B;
-        bridge.pb(make_pair(A, B));
-    }
-    reverse(all(bridge));
-
-    maxInconv = (N * (N - 1)) / 2;
-    result.pb(maxInconv);
-
-    UnionFind tree(N);
-    // DEBUG(M);
-    // DEBUG(bridge.size());
-    rep(i, M-1) {
-        P b = bridge[i];
-        // DEBUG(b._1);
-        // DEBUG(b._2);
-        tree.unite(b._1 - 1, b._2 - 1);
-
-        // cout << "------------" << endl;
-        // DEBUG(i);
-
-        rep(j, N) {
-            cnt[j] = 0;
-        }
-
-        // rep(j, N) {
-        //     DEBUG(cnt[j]);
-        // }
-        // cout << "------------" << endl;
-        rep(j, N) {
-            // DEBUG(tree.root(j));
-            cnt[tree.root(j)] += 1;
-        }
-
-        // rep(j, N) {
-        //     DEBUG(cnt[j]);
-        // }
-
-        ll conv = 0;
-
-        rep(j, N) {
-            if (cnt[j] > 1) {
-                conv += (cnt[j] * (cnt[j] - 1)) / 2;
-            }
-        }
-
-        // DEBUG(conv);
-        result.pb(maxInconv - conv);
+        path.pb(make_pair(A, B));
     }
 
-    reverse(all(result));
+    reverse(all(path));
+    vector<int> results;
+    UnionFind T(N);
+    int res = (N * (N -1) / 2);
+    rep (i, M) {
+        // 答えを追加
+        results.pb(res);
 
-    rep(i, M) {
-        if (result[i] >= 0) {
-            cout << result[i] << endl;
-        } else {
-            cout << 0 << endl;
+        // 次の答えを作成
+        P p = path[i];
+        int a = p._1 - 1;
+        int b = p._2 - 1;
+
+        // パスの両端の連結成分が違うなら、その両端の数を掛けたものを前より引く
+        if (T.find(a) != T.find(b)) {
+            res = res - (T.size(a) * T.size(b));
         }
+
+        // 結合する
+        T.unite(a, b);
+    }
+
+    reverse(all(results));
+
+    rep (i, M) {
+        cout << results[i] << endl;
     }
 }
