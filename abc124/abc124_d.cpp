@@ -37,38 +37,59 @@ int main() {
     int tmpL = 0;
     int maxR = -1;
 
-    rep(i, S.length()) {
-        if (S[i] != pre && S[i] == '0') { // 前と違い0
-            result = revCnt + 1;
-            revCnt = 0;
-            tmpL = 0;
-        } else if (S[i] != pre && S[i] == '1') { // 前と違い1
-            revCnt = 1;
-            result++;
-        } else if (S[i] == pre && S[i] == '0') { // 前と一緒0
-            revCnt = 0;
-            result++;
-        } else if (S[i] == pre && S[i] == '1') { // 前と一緒1
-            revCnt++;
-            result++;
+    rep(j, K) {
+        // 初期化
+        revCnt = 0;
+        result = 0;
+        maxResult = 0;
+        pre = '.';
+        maxL = -1;
+        tmpL = 0;
+        maxR = -1;
+
+        rep(i, N) {
+
+            if (S[i] != pre && S[i] == '0') { // 前と違い0
+                result = revCnt + 1;
+                revCnt = 0;
+                tmpL = i;
+            } else if (S[i] != pre && S[i] == '1') { // 前と違い1
+                revCnt = 1;
+                result++;
+            } else if (S[i] == pre && S[i] == '0') { // 前と一緒0
+                revCnt = 0;
+                result++;
+            } else if (S[i] == pre && S[i] == '1') { // 前と一緒1
+                revCnt++;
+                result++;
+            }
+            maxResult = max(maxResult, result);
+
+            if (maxResult == result) {
+                maxL = tmpL;
+                maxR = i;
+            }
+
+            // DEBUG(i);
+            // DEBUG(revCnt);
+            // DEBUG(S[i]);
+            // DEBUG(result);
+            // DEBUG(maxL);
+            // DEBUG(maxR);
+            // cout << "------------" << endl;
+
+            pre = S[i];
         }
-        maxResult = max(maxResult, result);
-
-        if (maxResult == result) {
-            maxL = tmpL;
-            maxR = i;
+        // 最大になるところを塗りつぶして次へ
+        rep(i, N) {
+            if(maxL <= i && i <= maxR) {
+                S[i] = '1';
+            }
         }
 
-        DEBUG(i);
-        DEBUG(revCnt);
-        DEBUG(S[i]);
-        DEBUG(result);
-        DEBUG(maxL);
-        DEBUG(maxR);
-        cout << "------------" << endl;
-
-        pre = S[i];
+        if (maxResult == N) { // 最大なら終了
+            break;
+        }
     }
-
     cout << maxResult << endl;
 }
