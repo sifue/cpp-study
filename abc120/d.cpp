@@ -27,23 +27,23 @@ __attribute__((constructor)) void initial() {
 struct UnionFind
 {
   // par[i]：データiが属する木の親の番号。i == par[i]のとき、データiは木の根ノードである
-  vector<int> par;
+  vector<ll> par;
   // sizes[i]：根ノードiの木に含まれるデータの数。iが根ノードでない場合は無意味な値となる
-  vector<int> sizes;
+  vector<ll> sizes;
 
-  UnionFind(int n) : par(n), sizes(n, 1) {
+  UnionFind(ll n) : par(n), sizes(n, 1) {
     // 最初は全てのデータiがグループiに存在するものとして初期化
     rep(i,n) par[i] = i;
   }
 
   // データxが属する木の根を得る
-  int find(int x) {
+  ll find(ll x) {
     if (x == par[x]) return x;
     return par[x] = find(par[x]);  // 根を張り替えながら再帰的に根ノードを探す
   }
 
   // 2つのデータx, yが属する木をマージする
-  void unite(int x, int y) {
+  void unite(ll x, ll y) {
     // データの根ノードを得る
     x = find(x);
     y = find(y);
@@ -61,38 +61,38 @@ struct UnionFind
   }
 
   // 2つのデータx, yが属する木が同じならtrueを返す
-  bool same(int x, int y) {
+  bool same(ll x, ll y) {
     return find(x) == find(y);
   }
 
   // データxが含まれる木の大きさを返す
-  int size(int x) {
+  ll size(ll x) {
     return sizes[find(x)];
   }
 };
 
 int main() {
-    int N, M;
+    ll N, M;
     cin >> N >> M;
     vector<P> path;
     rep(i, M) {
-        int A, B;
+        ll A, B;
         cin >> A >> B;
         path.pb(make_pair(A, B));
     }
 
     reverse(all(path));
-    vector<int> results;
+    vector<ll> results;
     UnionFind T(N);
-    int res = (N * (N -1) / 2);
+    ll res = (N * (N -1) / 2);
     rep (i, M) {
         // 答えを追加
         results.pb(res);
 
         // 次の答えを作成
         P p = path[i];
-        int a = p._1 - 1;
-        int b = p._2 - 1;
+        ll a = p._1 - 1;
+        ll b = p._2 - 1;
 
         // パスの両端の連結成分が違うなら、その両端の数を掛けたものを前より引く
         if (T.find(a) != T.find(b)) {
