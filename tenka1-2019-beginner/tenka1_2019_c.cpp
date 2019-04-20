@@ -23,58 +23,37 @@ __attribute__((constructor)) void initial() {
     ios::sync_with_stdio(false);
 }
 
-int N;
-string S;
-
-int dfs (int i, bool goBlack) {
-    // if (i > 5) exit(0);
-    // cout << "------------" << endl;
-    // DEBUG(i);
-    // DEBUG(N);
-    // DEBUG(goBlack);
-    if (i == N - 1) {
-        if (goBlack) {
-            if (S[i] == '#') return 0;
-            if (S[i] == '.') return 1;
-        } else {
-            if (S[i] == '#') return 1;
-            if (S[i] == '.') return 0;
-        }
-    }
-
-    if (goBlack) {
-        int cntB = 0;
-        for (int j = i; j < N; j++) {
-            if (S[j] == '.') cntB++;
-        }
-        return cntB;
-    } else {
-        // 黒があるところまで進める
-        int j;
-        bool getBlack = false;
-        for (j = i; j < N - 1; j++) { // 最後一つ前まで進める
-            if (S[j] == '#') {
-                getBlack = true;
-                break;
-            }
-        }
-        // DEBUG(j);
-        if (getBlack) {
-          int goBlackResult = dfs(j + 1, true); // ここから全部黒くする
-          // DEBUG(goBlackResult);
-          int revBlackReslt = 1 + dfs(j + 1, false); // 黒を白に反転して進める
-          // DEBUG(revBlackReslt);
-          // return revBlackReslt;
-          return min(goBlackResult, revBlackReslt);
-        } else {
-          return dfs(j, false);
-        }
-
-    }
-}
+int leftB[200001] = {0};
+int rightW[200001] = {0};
 
 int main() {
+    int N;
+    string S;
     cin >> N >> S;
-    int result = dfs(0, false);
-    cout << result << endl;
+
+    ll sumB = 0;
+    rep (i, N) { // カーソルの左隣の黒の数
+        leftB[i] = sumB;
+        if (S[i] == '#') sumB++;
+    }
+
+    ll sumW = 0;
+    for (int i = N-1; i >= 0; i--) { // カーソルを含む右隣の白の数
+        if (S[i] == '.') sumW++;
+        rightW[i] = sumW;
+    }
+
+    ll minResult = INF;
+    char preC = '@';
+    bool hasIF = false;
+    rep(i, N) {
+        if(preC != '@' && S[i] != preC) {
+            ll currentResult = leftB[i] + rightW[i];
+            minResult = min(minResult, currentResult);
+            hasIF = true;
+        }
+        preC = S[i];
+    }
+    if (!hasIF) minResult = 0; // 境界無しの場合
+    cout << minResult << endl;
 }
