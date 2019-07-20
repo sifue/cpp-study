@@ -33,14 +33,39 @@ int main() {
         a.pb(ai);
     }
 
-    for (int i = N - 1; i >= 0; i--) {
+    int result[200000] = {0};
+    // 後ろから確定させていく
+    for (int j = N - 1; j >= 0; j--) {
+        int i = j + 1;
 
+        // i が 2分の1以上だとその数だけ
+        if (i > N / 2) {
+            result[j] = a[j];
+        } else {
+            // そうじゃないものはiの倍数を2倍、3倍と足し合わせる
+            int sum = 0;
+            for (int k = i * 2 ; k <= N; k = k + i) {
+                sum += result[k - 1];
+            }
 
+            sum %= 2;
+            if ((a[j] == 0 && sum == 0) || (a[j] == 1 && sum == 1)) {
+                result[j] = 0;
+            } else {
+                result[j] = 1;
+            }
+        }
     }
-    if (a[0] == 0) {
-       cout << 0 << endl;
-    } else {
-       cout << 1 << endl;
-       cout << 1 << endl;
+
+    int M = 0;
+    rep(i, N) {
+        if (result[i] == 1) M++;
+    }
+
+    cout << M << endl;
+    rep(i, N) {
+        if (result[i] == 1) {
+            cout << (i + 1) << endl;
+        }
     }
 }
