@@ -18,32 +18,14 @@ typedef long long ll;
 
 int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
 
-__attribute__((constructor)) void initial() {
+__attribute__((constructor))
+void initial() {
     cin.tie(0);
     ios::sync_with_stdio(false);
 }
 
 int main() {
-    vector<int> p;
-    int N;
-    cin >> N;
-    rep(i, N) {
-        int pi;
-        cin >> pi;
-        p.pb(pi);
-    }
-    int result = 0;
-    for (int i = 1; i < (N - 1); i++) {
-        int ord = 0;
-        // cout << "------------" << endl;
-        // DEBUG(i);
-        // DEBUG(p[i-1]);
-        // DEBUG(p[i]);
-        // DEBUG(p[i+1]);
-        if (p[i-1] > p[i]) ord++;
-        if (p[i+1] > p[i]) ord++;
-        if (ord == 1) result++;
-        // DEBUG(result);
-    }
-    cout << result << endl;
+    int A, B;
+    cin >> A >> B;
+    cout << ((A + B) / 2) << endl;
 }

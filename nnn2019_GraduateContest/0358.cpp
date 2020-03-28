@@ -18,24 +18,21 @@ typedef long long ll;
 
 int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};
 
-__attribute__((constructor)) void initial() {
+__attribute__((constructor))
+void initial() {
     cin.tie(0);
     ios::sync_with_stdio(false);
 }
 
 int main() {
-    int N;
-    cin >> N;
-    vector<int> d;
-    rep(i, N) {
-        int di;
-        cin >> di;
-        d.pb(di);
+    int m, f, b;
+    cin >> m >> f >> b;
+
+    if (b <= m) {
+        cout << 0 << endl;
+    } else if (m < b && b <= (m + f))  {
+        cout << (b - m) << endl;
+    } else {
+        cout << "NA" << endl;
     }
-    sort(all(d));
-    // rep(i, d.size()) DEBUG(d[i]);
-    // DEBUG(d[N/2-1]);
-    // DEBUG(d[N/2]);
-    int result = d[N/2] - d[N/2-1];
-    cout << result << endl;
 }
