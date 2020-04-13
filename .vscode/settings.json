@@ -1,6 +1,15 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "chrono": "cpp",
+        "*.tcc": "cpp",
+        "cinttypes": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "numeric": "cpp",
+        "ratio": "cpp",
+        "cstdlib": "cpp",
+        "valarray": "cpp"
     }
 }

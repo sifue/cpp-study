@@ -30,25 +30,23 @@ int main() {
     string S;
     cin >> S;
 
-    ll cnt = 0;
-    for (int i = 0; i < N - 2; i++) {
-        set<char> s1;
-        s1.insert(S[i]);
-        for (int j = i + 1; j < N - 1; j++) {
-            int diff = j - i;
-            set<char> s2 = s1;
-            s2.insert(S[j]);
-            if(s2.size() != 2) continue;
-            for (int k = j + 1; k < N ; k++) {
-                set<char> s3 = s2;
-                if(diff != k - j){
-                    s3.insert(S[k]);
-                    if(s3.size() == 3) cnt++;
-                }
-            }
+    ll r = 0, g = 0, b = 0;
+
+    rep(i, N) {
+        if (S[i] == 'R') r++;
+        if (S[i] == 'G') g++;
+        if (S[i] == 'B') b++;
+    }
+    ll result = r * g * b;
+
+    for (int i = 0; i < N; i++) {
+        for (int j = i + 1 ; j < N; j++) {
+            if(S[i] == S[j]) continue;
+            int k = (j - i) + j;
+            if (k >= N || S[k] == S[i] || S[k] == S[j]) continue;
+            result--;
         }
-        s1.clear();
     }
     
-    cout << cnt << endl;
+    cout << result << endl;
 }
