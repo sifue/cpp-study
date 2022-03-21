@@ -10,6 +10,7 @@
         "numeric": "cpp",
         "ratio": "cpp",
         "cstdlib": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "array": "cpp"
     }
 }
